@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="pagetitle">
+  <h1>View Product</h1>
+</div>
+<!-- End Page Title -->
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+
+          <!-- View Only -->
+          <div class="row mb-3">
+            <label for="viewName" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewName">{{ product.name }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewPrice" class="col-sm-2 col-form-label">Price</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewPrice">{{ product.price }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewCategory" class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewCategory">{{ product.category.name }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewDescription" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewDescription">{{ product.description }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewImage" class="col-sm-2 col-form-label">Image</label>
+            <div class="col-sm-10">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" alt="Product Image" class="img-thumbnail mb-2" width="150">
+              {% else %}
+                <p class="form-control-plaintext" id="viewImage">No image available</p>
+              {% endif %}
+            </div>
+          </div>
+          <div class="text-center">
+            <a href="{% url 'product_list' %}" class="btn btn-danger">Back</a>
+          </div>
+          <!-- End View Only -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

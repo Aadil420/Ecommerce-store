@@ -1,0 +1,86 @@
+{% extends 'main.html' %} {% block content %}
+{% load static %}
+<div class="container">
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="pt-4 pb-2">
+                                <h5 class="card-title text-center pb-0 fs-4">Create An Account</h5>
+                                <p class="text-center small">Enter your details to create your account</p>
+                            </div>
+
+                            <form action="{% url 'signup' %}" method="POST" class="row g-3 needs-validation" novalidate>
+                                {% csrf_token %}
+                                
+                                
+                                <!--First name-->
+                                <div class="col-12">
+                                {% if error %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{error}}
+                                </div>
+                                {% endif %}
+                                    <label for="firstName" class="form-label">First name</label>
+                                    <div class="input-group has-validation">
+                                        <input type="text" name="firstname" id="firstName" value="{{values.first_name}}" class="form-control" placeholder="First name" required>
+                                        <div class="invalid-feedback">Please enter your first name.</div>
+                                    </div>
+                                </div>
+                                
+                                <!--Last name-->
+                                <div class="col-12">
+                                    <label for="lastName" class="form-label mt-2">Last name</label>
+                                    <div class="input-group has-validation">
+                                        <input type="text" name="lastname" id="lastName" value="{{values.last_name}}" class="form-control" placeholder="Last name" required>
+                                        <div class="invalid-feedback">Please enter your last name.</div>
+                                    </div>
+                                </div>
+                                
+                                <!--Mobile number-->
+                                <div class="col-12">
+                                    <label for="phone" class="form-label mt-2">Mobile number</label>
+                                    <div class="input-group has-validation">
+                                        <input type="number" name="phone" id="phone" value="{{values.phone}}" class="form-control" placeholder="Mobile number" required>
+                                        <div class="invalid-feedback">Please enter your mobile number.</div>
+                                    </div>
+                                </div>
+                                
+                                <!--Email-->
+                                <div class="col-12">
+                                    <label for="email" class="form-label mt-2">Email</label>
+                                    <div class="input-group has-validation">
+                                        <input type="email" name="email" id="email" value="{{values.email}}" class="form-control" placeholder="example@gmail.com" required>
+                                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                                    </div>
+                                </div>
+                                
+                                <!--Password-->
+                                <div class="col-12">
+                                    <label for="password" class="form-label mt-2">Password</label>
+                                    <input type="password" name="password" id="password" class="form-control" placeholder="********" required>
+                                    <div class="invalid-feedback">Please enter a password.</div>
+                                </div>
+                                
+                                <!--Button-->
+                                <div class="col-12">
+                                    <button class="btn btn-dark w-100 my-3" type="submit">Create An Account</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+{% endblock %}

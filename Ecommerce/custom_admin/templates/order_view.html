@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="pagetitle">
+  <h1>View Order</h1>
+</div>
+<!-- End Page Title -->
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+
+          <!-- View Only -->
+          <div class="row mb-3">
+            <label for="viewProduct" class="col-sm-2 col-form-label">Product</label>
+            <div class="col-sm-10">
+            <p class="form-control-plaintext" id="viewCustomer"><a href="{% url 'order_items' order.id %}">View Order Items</a></p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewCustomer" class="col-sm-2 col-form-label">Customer</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewCustomer">{{ order.customer }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewQuantity" class="col-sm-2 col-form-label">Quantity</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewQuantity">{{ order.quantity }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewPrice" class="col-sm-2 col-form-label">Price</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewPrice">{{ order.price }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewAddress" class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewAddress">{{ order.address }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewPhone" class="col-sm-2 col-form-label">Phone</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewPhone">{{ order.phone }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewDate" class="col-sm-2 col-form-label">Date</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewDate">{{ order.date }}</p>
+            </div>
+          <div class="row mb-3">
+            <label for="viewDate" class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewDate">{{ order.status }}</p>
+            </div>
+          </div>
+          <div class="text-center">
+            <a href="{% url 'order_list' %}" class="btn btn-danger">Back</a>
+          </div>
+          <!-- End View Only -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

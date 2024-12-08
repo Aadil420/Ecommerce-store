@@ -1,0 +1,53 @@
+{% extends 'main.html' %}
+{% block content %}
+{% load static %}
+<div class="container">
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="pt-4 pb-2">
+                                <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                                <p class="text-center small">Enter your email & password to login</p>
+                            </div>
+
+                            <form method="POST" class="row g-3 needs-validation" novalidate>
+                                {% csrf_token %}
+                                {% if error %}
+                                <div class="alert alert-danger w-100" role="alert">
+                                    {{error}}
+                                </div>
+                                {% endif %}
+                                <!--Email-->
+                                <div class="col-12">
+                                    <label for="yourEmail" class="form-label">Email</label>
+                                    <div class="input-group has-validation">
+                                        <input type="email" name="email" id="yourEmail" value="{{values.email}}" class="form-control" required>
+                                        <div class="invalid-feedback">Please enter your email.</div>
+                                    </div>
+                                </div>
+                                <!--Password-->
+                                <div class="col-12">
+                                    <label for="yourPassword" class="form-label mt-2">Password</label>
+                                    <input type="password" name="password" id="yourPassword" class="form-control" required>
+                                    <div class="invalid-feedback">Please enter your password!</div>
+                                </div>
+                                <!--Button-->
+                                <div class="col-12">
+                                    <button class="btn btn-dark w-100 my-3" type="submit">Login</button>
+                                </div>
+                                <!-- Sign up link -->
+                                <div class="col-12">
+                                    <p class="small mb-0">Don't have an account? <a href="{% url 'signup' %}" style="text-decoration: none;">Create an account</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

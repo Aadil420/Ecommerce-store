@@ -1,0 +1,131 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+{% load cart %}
+{% load custom_filters %}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__text">
+          <h4>Shopping Cart</h4>
+          <div class="breadcrumb__links">
+            <a href=" {% url 'homepage' %} ">Home</a>
+            <a href=" {% url 'shop' %} ">Shop</a>
+            <span>Shopping Cart</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <form id="cart-form" method="POST" action="{% url 'update_cart' %}">
+          {% csrf_token %}
+          <div class="shopping__cart__table">
+          <!-- Error Message Display -->
+          {% if error_message %}
+          <div class="alert alert-danger" role="alert">
+              {{ error_message }}
+          </div>
+          {% endif %}
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for product in products %}
+                <tr>
+                  <td class="product__cart__item">
+                    <div class="product__cart__item__pic">
+                      <img
+                        class="cart-item-image"
+                        src="{{ product.image.url }}"
+                        alt=""
+                      />
+                    </div>
+                    <div class="product__cart__item__text">
+                      <h6>{{ product.name }}</h6>
+                      <h5>{{ product.price|currency }}</h5>
+                    </div>
+                  </td>
+                  <td class="quantity__item">
+                    <div class="quantity">
+                      <div class="pro-qty-2">
+                        <input
+                          type="number"
+                          name="quantity_{{ product.id }}"
+                          value="{{ product|cart_quantity:request.session.cart }}"
+                        />
+                      </div>
+                    </div>
+                  </td>
+                  <td class="cart__price">
+                    {{ product|price_total:request.session.cart|currency }}
+                  </td>
+                  <td class="cart__close">
+                    <a href="{% url 'remove_from_cart' product.id %}"
+                      ><i class="fa fa-close"></i
+                    ></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="continue__btn">
+                <a href="{% url 'shop' %}">Continue Shopping</a>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="continue__btn update__btn">
+                <a
+                  href="#"
+                  onclick="document.getElementById('cart-form').submit();"
+                >
+                  <i class="fa fa-spinner"></i> Update cart
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-4">
+        <div class="cart__total">
+          <h6>Cart total</h6>
+          <ul>
+            <li>
+              Subtotal
+              <span>{{ products|total_cart_price:request.session.cart|currency}}</span>
+            </li>
+            <li>
+              Total
+              <span>{{ products|total_cart_price:request.session.cart|currency}}</span>
+            </li>
+          </ul>
+              <form method="POST" action="{% url 'cart' %}" id="checkout-form">
+                {% csrf_token %}
+                <button type="submit" class="primary-btn">Proceed to checkout</button>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Shopping Cart Section End -->
+{% endblock %}

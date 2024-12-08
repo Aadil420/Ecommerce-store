@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="pagetitle">
+  {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>{{ error }}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endif %}
+  <h1>View Category</h1>
+</div>
+<!-- End Page Title -->
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+
+          <!-- View Only -->
+          <div class="row mb-3">
+            <label for="viewName" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewName">{{ category.name }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewDescription" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewDescription">{{ category.description }}</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="viewIsActive" class="col-sm-2 col-form-label">Active</label>
+            <div class="col-sm-10">
+              <p class="form-control-plaintext" id="viewIsActive">{% if category.is_active %}Yes{% else %}No{% endif %}</p>
+            </div>
+          </div>
+          <div class="text-center">
+            <a href="{% url 'category_list' %}" class="btn btn-danger">Back</a>
+          </div>
+          <!-- End View Only -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

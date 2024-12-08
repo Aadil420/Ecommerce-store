@@ -1,0 +1,195 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+{% load cart %}
+{% load custom_filters %}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Check Out</h4>
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'index' %}">Home</a>
+                        <a href="{% url 'shop' %}">Shop</a>
+                        <span>Check Out</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <form id="checkout-form" action="{% url 'checkout' %}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-8 col-md-6">
+                        <h6 class="checkout__title">Billing Details</h6>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>First Name<span>*</span></p>
+                                    <input type="text" name="first_name" required>
+                                    <div class="invalid-feedback">Please enter your First Name.</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Last Name<span>*</span></p>
+                                    <input type="text" name="last_name" required>
+                                    <div class="invalid-feedback">Please enter your Last Name.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Address<span>*</span></p>
+                            <input type="text" placeholder="Address" class="checkout__input__add" name="address" required>
+                            <div class="invalid-feedback">Please enter your Address.</div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>City<span>*</span></p>
+                            <input type="text" name="city" required>
+                            <div class="invalid-feedback">Please enter your City.</div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>State<span>*</span></p>
+                            <input type="text" name="state" required>
+                            <div class="invalid-feedback">Please enter your State.</div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Pincode<span>*</span></p>
+                            <input type="number" name="postcode" required>
+                            <div class="invalid-feedback">Please enter your Pincode.</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Phone<span>*</span></p>
+                                    <input type="number" name="phone" required>
+                                    <div class="invalid-feedback">Please enter your Phone.</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Email<span>*</span></p>
+                                    <input type="email" name="email" required>
+                                    <div class="invalid-feedback">Please enter your Email.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4 class="order__title">Your order</h4>
+                            <div class="checkout__order__products">Product <span>Total</span></div>
+                            <ul class="checkout__total__products">
+                                {% for item in cart_product_details %}
+                                    <li>{{ item.product.name }}(Qty: {{ item.quantity }}) <span>{{ item.product.price|currency }}</span></li>
+                                {% endfor %}
+                            </ul>
+                            <ul class="checkout__total__all">
+                                <li>Subtotal <span>{{ products|total_cart_price:request.session.cart|currency }}</span></li>
+                                <li>Total <span>{{ products|total_cart_price:request.session.cart|currency }}</span></li>
+                            </ul>
+                            <div class="checkout__input__checkbox">
+                                <label for="payment">
+                                    Cash On Delivery
+                                    <input type="checkbox" id="payment" name="payment_method" value="cod" required>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="checkout__input__checkbox">
+                                <label for="paypal">
+                                    Pay Online
+                                    <input type="checkbox" id="paypal" name="payment_method" value="online" required>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <button type="submit" id="rzp-button1" class="site-btn">PLACE ORDER</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- Checkout Section End -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "rzp_test_jo0inWyUOZon7N", // Enter the Key ID generated from the Dashboard
+        "amount": "{{payment.amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "Man Fashion", // your business name
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": "{{payment.id}}", // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+            // Append Razorpay response to the form and submit the form
+            var form = document.getElementById('checkout-form');
+            form.innerHTML += `<input type="hidden" name="razorpay_payment_id" value="${response.razorpay_payment_id}">`;
+            form.innerHTML += `<input type="hidden" name="razorpay_order_id" value="${response.razorpay_order_id}">`;
+            form.innerHTML += `<input type="hidden" name="razorpay_signature" value="${response.razorpay_signature}">`;
+            form.submit();
+        },
+        "prefill": {
+            "name": "Test User",
+            "email": "test.user@example.com",
+            "contact": "9999999999"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#F37254"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on('payment.failed', function (response) {
+
+var message = "Code: " + response.error.code + "\n" +
+
+              "Description: " + response.error.description + "\n" +
+
+              "Source: " + response.error.source + "\n" +
+
+              "Step: " + response.error.step + "\n" +
+
+              "Reason: " + response.error.reason + "\n" +
+
+              "Order ID: " + response.error.metadata.order_id + "\n" +
+
+              "Payment ID: " + response.error.metadata.payment_id;
+
+alert(message);
+
+});
+
+
+
+document.getElementById('rzp-button1').onclick = function (e) {
+
+var form = document.getElementById('checkout-form');
+
+if (form.checkValidity()) {
+
+    rzp1.open();
+
+} else {
+
+    alert('Please fill out all required fields.');
+
+}
+        e.preventDefault();
+    }
+</script>
+    
+{% endblock %}
